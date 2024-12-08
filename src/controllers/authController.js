@@ -18,7 +18,8 @@ const authController = {
     try {
       // Enkripsi password
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.createUser(name, email, hashedPassword);
+      const dataBody = { name, email, password: hashedPassword };
+      const user = await User.createNewUser(dataBody);
       responseFormatter.success(res, user, "User created successfully", 201);
     } catch (error) {
       responseFormatter.error(res, error, "User creation failed", 500);
@@ -54,7 +55,7 @@ const authController = {
 
       responseFormatter.success(res, { user, token }, "Login successful", 200);
     } catch (error) {
-      res.status(500).json({ error: "Login failed" });
+      responseFormatter.error(res, error, "Login failed", 500);
     }
   },
 };

@@ -34,4 +34,19 @@ const error = (res, errors = null, message = null, code = 400) => {
   return res.status(code).json(response);
 };
 
-module.exports = { success, error };
+const validationError = (res, errors) => {
+  const response = {
+    meta: {
+      code: 422,
+      status: "error",
+      message: "Validation error",
+    },
+    data: null,
+    pagination: null,
+    errors: errors,
+  };
+
+  return res.status(422).json(response);
+};
+
+module.exports = { success, error, validationError };
